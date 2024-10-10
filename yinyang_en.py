@@ -173,15 +173,20 @@ hexagram_table = {
     "111111": "乾为天"
 }
 
+def draw_numbers(n=6):
+    numbers = [6, 7, 8, 9]
+    probabilities = [1/16, 5/16, 7/16, 3/16]
+    results = random.choices(numbers, weights=probabilities, k=n)
+    return results
+
 def generate_hexagram():
     """
     Generate 6 random numbers and create the main and changing hexagrams based on the rules
+    According to the operational procedure of the "Dayan Divination Method," the probabilities of obtaining 6, 7, 8, and 9 are not equal. The corrections are as follows:
     """
-    random_numbers = [random.choice([6, 7, 8, 9]) for _ in range(6)]
+    # random_numbers = [random.choice([6, 7, 8, 9]) for _ in range(6)]
+    random_numbers = draw_numbers()
     print(random_numbers)
-    # 反向排列
-    # random_numbers.reverse()
-    # print(random_numbers)
 
     # 映射主卦 (9 和 7 对应1, 6 和 8 对应0)
     main_hexagram = ''.join(['1' if num in [9, 7] else '0' for num in random_numbers])
@@ -195,15 +200,6 @@ def generate_hexagram():
 
     return main_hexagram_name, changing_hexagram_name
 
-# def generate_hexagram():
-#     """
-#     生成主卦和变卦的占卜逻辑
-#     TODO: 具体起卦逻辑稍后实现
-#     """
-#     main_hexagram = "坤为地"  # 占位符
-#     changing_hexagram = "地雷复"  # 占位符
-#     return main_hexagram, changing_hexagram
-
 def submit_to_chatgpt(question, main_hexagram_name, changing_hexagram_name):
     """
     Submit the question, main hexagram, and changing hexagram to ChatGPT and get the answer
@@ -211,14 +207,6 @@ def submit_to_chatgpt(question, main_hexagram_name, changing_hexagram_name):
     prompt = f"Question: {question}\nMain Hexagram: {main_hexagram_name}\nChanging Hexagram: {changing_hexagram_name}\nPlease provide an interpretation based on the hexagrams."
     
     try:
-        # # 使用新的 completions.create() 方法替换旧的 ChatCompletion.create() 
-        # response = OpenAI.completions.create(
-        #     model="gpt-4",  # 使用最新的模型
-        #     prompt=prompt,  # 直接使用 prompt
-        #     max_tokens=1000,  # 控制返回文本的长度
-        #     temperature=0.7,  # 控制生成的创造性
-        #     n=1  # 返回一个答案
-        # )
         completion = client.chat.completions.create(
             model="gpt-4o",
             messages=[
