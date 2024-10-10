@@ -203,15 +203,6 @@ def generate_hexagram():
 
     return main_hexagram_name, changing_hexagram_name
 
-# def generate_hexagram():
-#     """
-#     生成主卦和变卦的占卜逻辑
-#     TODO: 具体起卦逻辑稍后实现
-#     """
-#     main_hexagram = "坤为地"  # 占位符
-#     changing_hexagram = "地雷复"  # 占位符
-#     return main_hexagram, changing_hexagram
-
 def submit_to_chatgpt(question, main_hexagram_name, changing_hexagram_name):
     """
     将问题、主卦、变卦提交给ChatGPT并获取解答
@@ -219,14 +210,6 @@ def submit_to_chatgpt(question, main_hexagram_name, changing_hexagram_name):
     prompt = f"问题: {question}\n主卦: {main_hexagram_name}\n变卦: {changing_hexagram_name}\n请根据卦象给出解答。"
     
     try:
-        # # 使用新的 completions.create() 方法替换旧的 ChatCompletion.create() 
-        # response = OpenAI.completions.create(
-        #     model="gpt-4",  # 使用最新的模型
-        #     prompt=prompt,  # 直接使用 prompt
-        #     max_tokens=1000,  # 控制返回文本的长度
-        #     temperature=0.7,  # 控制生成的创造性
-        #     n=1  # 返回一个答案
-        # )
         completion = client.chat.completions.create(
             model="gpt-4o",
             messages=[
