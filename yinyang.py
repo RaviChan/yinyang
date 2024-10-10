@@ -173,11 +173,19 @@ hexagram_table = {
     "111111": "乾为天"
 }
 
+def draw_numbers(n=6):
+    numbers = [6, 7, 8, 9]
+    probabilities = [1/16, 5/16, 7/16, 3/16]
+    results = random.choices(numbers, weights=probabilities, k=n)
+    return results
+    
 def generate_hexagram():
     """
     生成6个随机数，并根据规则生成主卦和变卦
+    根据"大衍筮法"的操作流程, 得到6,7,8,9的概率是不等的. 重新更正如下:
     """
-    random_numbers = [random.choice([6, 7, 8, 9]) for _ in range(6)]
+    # random_numbers = [random.choice([6, 7, 8, 9]) for _ in range(6)]
+    random_numbers = draw_numbers()
     print(random_numbers)
     # 反向排列
     # random_numbers.reverse()
